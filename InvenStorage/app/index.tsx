@@ -1,23 +1,58 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  Text,
+  KeyboardAvoidingView,
+  View,
+  Platform,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { styles } from "./styles";
-import { Input } from "../components/Input"
+import { Input } from "../components/Input";
+import { useAuth } from "../src/context/AuthContext"; // Ajuste esse caminho se necessário
+import { useState } from "react";
 
-export default function Index() {
+const asset = require("../assets/images/logo.png");
+
+export default function Login() {
+  const { signIn } = useAuth(); // hook do contexto
+  const [username, setUsername] = useState(""); // estado para o campo usuário
+  const [password, setPassword] = useState(""); // estado para o campo senha
+
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require("../assets/images/logo.png")}
-      />
-      <Text style={styles.textTitle}>Faça seu Login</Text>
-      {/* <TextInput style={styles.input} placeholder="Usuário *" />
-      <TextInput style={styles.input} placeholder="Senha *" secureTextEntry /> */}
-      <Input icon="user" placeholder="Usuário *" />
-      <Input icon="key" placeholder="Senha *" />
+    <KeyboardAvoidingView
+      behavior={"padding"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
+      style={styles.container}
+    >
+      <Image style={[styles.logo, { resizeMode: "contain" }]} source={asset} />
+      <View style={styles.loginBox}>
+        <Text style={styles.textTitle}>Faça seu Login</Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Input do usuário */}
+        <Input
+          icon="user"
+          placeholder="Usuário *"
+          value={username}
+          onChangeText={setUsername}
+        />
+
+        {/* Input da senha */}
+        <Input
+          icon="key"
+          placeholder="Senha *"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
+        {/* Botão de login */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => signIn(username, password)}
+        >
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
