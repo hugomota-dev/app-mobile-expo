@@ -4,10 +4,10 @@ import {
   View,
   Platform,
   Image,
-  TouchableOpacity,
 } from "react-native";
 import { styles } from "./styles";
 import { Input } from "../components/Input";
+import { Button } from "../components/Button";
 import { useAuth } from "../src/context/AuthContext"; // Ajuste esse caminho se necessário
 import { useState } from "react";
 
@@ -46,12 +46,7 @@ export default function Login() {
         />
 
         {/* Botão de login */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => signIn(username, password)}
-        >
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+        <Button title="Entrar" onPress={() => signIn(username, password)} />
       </View>
     </KeyboardAvoidingView>
   );
